@@ -14,11 +14,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.OldTunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.PhotonVision;
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * OldTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -35,9 +35,9 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
     
+    PhotonVision cameraData = new PhotonVision("testingCamera");
 
-    private final double aprilTagXValue = Math.random(); 
-    private final int aprilTagYValue = 1; //Dummy Values, this should be the value of the april tags position (1, 1), (1, -1), (-1, 1) or (-1, -1)
+    private final int TagId = 1;
     public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
 
     public RobotContainer() {
@@ -52,7 +52,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(aprilTagXValue * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    .withRotationalRate(cameraData.getTargetYaw(TagId).getAsDouble() * MaxAngularRate) // Drive counterclockwise with negative X (left)
                     // * joystick.getRightTriggerAxis() * -2 rotate away
             )
         );
@@ -103,32 +103,26 @@ public class RobotContainer {
         );
     }
     public Command moveAprilTagLeft() {
-        if (aprilTagXValue == 0) {
+        if (cameraData.getTargetYaw(TagId).getAsDouble() == 0) {
             return Commands.sequence(
                 drivetrain.applyRequest(() ->
-                drive.withRotationalRate(aprilTagXValue * MaxAngularRate) // Drive so that april tag is left )
+                drive.withRotationalRate(-1 * MaxAngularRate) // Drive so that april tag is left 
+                // Note ** prolly change -1 and 1 in the next Command to a variable
                             )
-            ); //Rotate the robot left
+            ); //Rotate the robot right
         } else {
             return Commands.sequence(); //Do nothing     
         }
     }
     public Command moveAprilTagRight() {
-        // Simple drive forward auton
-        final var idle = new SwerveRequest.Idle();
-        return Commands.sequence(
-            // Reset our field centric heading to match the robot
-            // facing away from our alliance station wall (0 deg).
-            drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
-            // Then slowly drive forward (away from us) for 5 seconds.
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(0.5)
-                    .withVelocityY(0)
-                    .withRotationalRate(0)
-            )
-            .withTimeout(5.0),
-            // Finally idle for the rest of auton
-            drivetrain.applyRequest(() -> idle)
-        );
+       if (cameraData.getTargetYaw(TagId).getAsDouble() == 0) {
+            return Commands.sequence(
+                drivetrain.applyRequest(() ->
+                drive.withRotationalRate(1 * MaxAngularRate) // Drive so that april tag is right
+                            )
+            ); //Rotate the robot left
+        } else {
+            return Commands.sequence(); //Do nothing     
+        }
     }
 }
