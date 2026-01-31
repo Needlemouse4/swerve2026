@@ -33,6 +33,8 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
+    private final double MaxYaw = 90;
+
     private final CommandXboxController joystick = new CommandXboxController(0);
     
     PhotonVision cameraData = new PhotonVision("testingCamera");
@@ -51,7 +53,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(cameraData.getAnyYaw() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    .withRotationalRate(cameraData.getAnyYaw()/MaxYaw * MaxAngularRate) // Drive counterclockwise with negative X (left)
                     // * joystick.getRightTriggerAxis() * -2 rotate away
             )
         );
@@ -74,8 +76,8 @@ public class RobotContainer {
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
-        joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
+        //joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
+        //joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
 
         // Reset the field-centric heading on left bumper press.
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
