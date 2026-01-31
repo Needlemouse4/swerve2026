@@ -1,14 +1,17 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Telemetry;
 
 public class ElasticData extends SubsystemBase{
     PhotonVision cameraData = new PhotonVision("testingCamera");
     private final Telemetry telemetry;
 
     public ElasticData(Telemetry m_telemetry){
-        telemtry = m_telemetry;
+        telemetry = m_telemetry;
     }
 
     @Override
@@ -57,7 +60,7 @@ public class ElasticData extends SubsystemBase{
           builder.addDoubleProperty("Back Right Angle", () -> telemetry.m_moduleDirections[1].getAngle() /*  * 2 * Math.PI */, null);
           builder.addDoubleProperty("Back Right Velocity", () -> telemetry.m_moduleSpeeds[1].getLength(), null);
       
-          builder.addDoubleProperty("Robot Angle", () -> elasticContainer.robotAngle / 2 * Math.PI, null);
+         // builder.addDoubleProperty("Robot Angle", () -> elasticContainer.robotAngle / 2 * Math.PI, null);
         } 
       });
     }
