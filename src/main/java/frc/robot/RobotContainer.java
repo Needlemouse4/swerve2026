@@ -6,12 +6,9 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.lang.reflect.Array;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
-import edu.wpi.first.apriltag.AprilTagPoseEstimate;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -37,8 +34,8 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    private final int[] AprilTagValue = {1, 1};
-    
+    private final int[] AprilTagValue = {1, 1}; //Dummy Value, this should be the value of the april tags position (1, 1), (1, -1), (-1, 1) or (-1, -1)
+    //You can change it off of int[] if you want :Ds
     public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
 
     public RobotContainer() {
