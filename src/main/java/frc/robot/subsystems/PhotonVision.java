@@ -6,6 +6,7 @@ import java.util.OptionalDouble;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVision{
     //making the variable for the camera used--
@@ -38,6 +39,17 @@ public class PhotonVision{
 
     }
  */
+    public double getAmbiguity(){
+        if (latestResult != null && latestResult.hasTargets()){
+            PhotonTrackedTarget target = latestResult.getBestTarget();
+
+            return target.getPoseAmbiguity();
+        } else {
+            return -1.0;
+        }
+
+    }
+
 
     //returns an array list of all april tag IDs seen by the camera.
     public List<Double> getIDs(){

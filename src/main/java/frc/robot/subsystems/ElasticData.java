@@ -13,9 +13,11 @@ public class ElasticData extends SubsystemBase{
         double[] targetIDs = cameraData.getIDs().stream()
         .mapToDouble(Double::doubleValue)
         .toArray();
+        double ambiguity = cameraData.getAmbiguity();
 
         SmartDashboard.putNumberArray("Target IDs", targetIDs);
         SmartDashboard.putBoolean("Target Visible", targetVisible);
+        SmartDashboard.putNumber("Ambiguity", ambiguity);
         for(var id : targetIDs){
             double yaw = cameraData
             .getTargetYaw((int) id)
