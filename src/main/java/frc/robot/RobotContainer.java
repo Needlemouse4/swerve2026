@@ -54,7 +54,6 @@ public class RobotContainer {
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(cameraData.getAnyYaw()/MaxYaw * MaxAngularRate) // Drive counterclockwise with negative X (left)
-                    // * joystick.getRightTriggerAxis() * -2 rotate away
             )
         );
 
