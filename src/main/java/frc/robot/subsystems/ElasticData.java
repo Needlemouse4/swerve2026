@@ -60,7 +60,7 @@ public class ElasticData extends SubsystemBase{
           builder.addDoubleProperty("Back Right Angle", () -> telemetry.m_moduleDirections[1].getAngle() /*  * 2 * Math.PI */, null);
           builder.addDoubleProperty("Back Right Velocity", () -> telemetry.m_moduleSpeeds[1].getLength(), null);
       
-         // builder.addDoubleProperty("Robot Angle", () -> elasticContainer.robotAngle / 2 * Math.PI, null);
+          builder.addDoubleProperty("Robot Angle", () -> telemetry.m_poseArray[2], null);
         } 
       });
     }
