@@ -10,6 +10,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -56,7 +57,8 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(cameraData.getAnyYaw()/MaxYaw * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    .withRotationalRate((cameraData.getAnyYaw() / MaxYaw) * MaxAngularRate) // Drive counterclockwise with negative X (left)
+
             )
         );
 
@@ -78,6 +80,7 @@ public class RobotContainer {
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        joystick.x().onTrue(print());
         //joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
         //joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
 
@@ -128,5 +131,9 @@ public class RobotContainer {
         } else {
             return Commands.sequence(); //Do nothing     
         }
+    }
+    public Command print() {
+        System.err.println(cameraData.getAnyYaw()/MaxYaw * MaxAngularRate);
+        return Commands.sequence();
     }
 }
