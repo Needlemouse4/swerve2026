@@ -23,6 +23,8 @@ public class ElasticData extends SubsystemBase{
         .toArray();
         double ambiguity = cameraData.getAmbiguity();
 
+        SmartDashboard.putNumber("raw pitch", cameraData.getAnyPitch());
+        SmartDashboard.putNumber("raw yaw", cameraData.getAnyYaw());
         SmartDashboard.putNumberArray("Target IDs", targetIDs);
         SmartDashboard.putBoolean("Target Visible", targetVisible);
         SmartDashboard.putNumber("Ambiguity", ambiguity);
