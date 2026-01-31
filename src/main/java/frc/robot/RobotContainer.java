@@ -34,8 +34,8 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    private final int[] AprilTagValue = {1, 1}; //Dummy Value, this should be the value of the april tags position (1, 1), (1, -1), (-1, 1) or (-1, -1)
-    //You can change it off of int[] if you want :Ds
+    private final int aprilTagXValue = 1; 
+    private final int aprilTagYValue = 1; //Dummy Values, this should be the value of the april tags position (1, 1), (1, -1), (-1, 1) or (-1, -1)
     public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
 
     public RobotContainer() {
@@ -50,7 +50,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    .withRotationalRate(aprilTagXValue * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
 
