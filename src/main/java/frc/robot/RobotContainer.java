@@ -37,7 +37,6 @@ public class RobotContainer {
     
     PhotonVision cameraData = new PhotonVision("testingCamera");
 
-    private final int TagId = 10;
     public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
 
     public RobotContainer() {
@@ -52,7 +51,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(cameraData.getTargetYaw(TagId).getAsDouble() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    .withRotationalRate(cameraData.getAnyYaw() * MaxAngularRate) // Drive counterclockwise with negative X (left)
                     // * joystick.getRightTriggerAxis() * -2 rotate away
             )
         );
@@ -103,7 +102,7 @@ public class RobotContainer {
         );
     }
     public Command moveAprilTagLeft() {
-        if (cameraData.getTargetYaw(TagId).getAsDouble() == 0) {
+        if (cameraData.getAnyYaw() == 0) {
             return Commands.sequence(
                 drivetrain.applyRequest(() ->
                 drive.withRotationalRate(-1 * MaxAngularRate) // Drive so that april tag is left 
@@ -115,8 +114,9 @@ public class RobotContainer {
         }
     }
     public Command moveAprilTagRight() {
-       if (cameraData.getTargetYaw(TagId).getAsDouble() == 0) {
+       if (cameraData.getAnyYaw() == 0) {
             return Commands.sequence(
+                
                 drivetrain.applyRequest(() ->
                 drive.withRotationalRate(1 * MaxAngularRate) // Drive so that april tag is right
                             )
