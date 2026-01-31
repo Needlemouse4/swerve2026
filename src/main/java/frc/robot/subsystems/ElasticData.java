@@ -5,6 +5,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElasticData extends SubsystemBase{
     PhotonVision cameraData = new PhotonVision("testingCamera");
+    private final Telemetry telemetry;
+
+    public ElasticData(Telemetry m_telemetry){
+        telemtry = m_telemetry;
+    }
 
     @Override
     public void periodic(){
@@ -34,9 +39,30 @@ public class ElasticData extends SubsystemBase{
                 SmartDashboard.putNumber("Target" + id + "pitch", pitch);
             }
         }
+        SmartDashboard.putData("Swerve Drive", new Sendable() {
+
+      @Override      
+        public void initSendable(SendableBuilder builder) {
+          builder.setSmartDashboardType("SwerveDrive");
+      
+          builder.addDoubleProperty("Front Left Angle", () -> telemetry.m_moduleDirections[0].getAngle() /* * 2 * Math.PI */, null);
+          builder.addDoubleProperty("Front Left Velocity", () -> telemetry.m_moduleSpeeds[0].getLength(), null);
+      
+          builder.addDoubleProperty("Front Right Angle", () -> telemetry.m_moduleDirections[2].getAngle() /* * 2 * Math.PI */, null);
+          builder.addDoubleProperty("Front Right Velocity", ()  -> telemetry.m_moduleSpeeds[2].getLength(), null);
+      
+          builder.addDoubleProperty("Back Left Angle", () -> telemetry.m_moduleDirections[3].getAngle() /*  * 2 * Math.PI */, null);
+          builder.addDoubleProperty("Back Left Velocity", () -> telemetry.m_moduleSpeeds[3].getLength(), null);
+      
+          builder.addDoubleProperty("Back Right Angle", () -> telemetry.m_moduleDirections[1].getAngle() /*  * 2 * Math.PI */, null);
+          builder.addDoubleProperty("Back Right Velocity", () -> telemetry.m_moduleSpeeds[1].getLength(), null);
+      
+          builder.addDoubleProperty("Robot Angle", () -> elasticContainer.robotAngle / 2 * Math.PI, null);
+        } 
+      });
     }
 
-
+    
 
 
 
