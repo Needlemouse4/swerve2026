@@ -75,7 +75,7 @@ public class PhotonVision{
     }
 
     //returns the pitch of a desired target if that target is seen by the camera.
-    public OptionalDouble getTargetPitchaw(int tagID){
+    public OptionalDouble getTargetPitch(int tagID){
         if(latestResult != null && latestResult.hasTargets()){
             for (var target : latestResult.getTargets()){
                 if (target.getFiducialId() == tagID){
@@ -84,6 +84,25 @@ public class PhotonVision{
             }
         }
         return OptionalDouble.empty();
+    }
+
+    public double getAnyYaw(){
+        if (latestResult != null && latestResult.hasTargets()){
+            var target = latestResult.getBestTarget();
+            return target.getYaw();
+        } else {
+            return 0.0;
+        }
+
+    }
+
+        public double getAnyPitch(){
+        if (latestResult != null && latestResult.hasTargets()){
+            var target = latestResult.getBestTarget();
+            return target.getPitch();
+        } else {
+            return 0.0;
+        }
     }
 
     //returns a boolean for if the camera sees a target.
