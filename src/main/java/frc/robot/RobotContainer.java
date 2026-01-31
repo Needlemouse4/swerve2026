@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.OldTunerConstants;
@@ -33,8 +34,9 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    
 
-    private final int aprilTagXValue = 1; 
+    private final double aprilTagXValue = Math.random(); 
     private final int aprilTagYValue = 1; //Dummy Values, this should be the value of the april tags position (1, 1), (1, -1), (-1, 1) or (-1, -1)
     public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
 
@@ -51,6 +53,7 @@ public class RobotContainer {
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(aprilTagXValue * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    // * joystick.getRightTriggerAxis() * -2 rotate away
             )
         );
 
@@ -72,6 +75,8 @@ public class RobotContainer {
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
+        joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
 
         // Reset the field-centric heading on left bumper press.
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
@@ -80,6 +85,35 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
+        // Simple drive forward auton
+        final var idle = new SwerveRequest.Idle();
+        return Commands.sequence(
+            // Reset our field centric heading to match the robot
+            // facing away from our alliance station wall (0 deg).
+            drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
+            // Then slowly drive forward (away from us) for 5 seconds.
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(0.5)
+                    .withVelocityY(0)
+                    .withRotationalRate(0)
+            )
+            .withTimeout(5.0),
+            // Finally idle for the rest of auton
+            drivetrain.applyRequest(() -> idle)
+        );
+    }
+    public Command moveAprilTagLeft() {
+        if (aprilTagXValue == 0) {
+            return Commands.sequence(
+                drivetrain.applyRequest(() ->
+                drive.withRotationalRate(aprilTagXValue * MaxAngularRate) // Drive so that april tag is left )
+                            )
+            ); //Rotate the robot left
+        } else {
+            return Commands.sequence(); //Do nothing     
+        }
+    }
+    public Command moveAprilTagRight() {
         // Simple drive forward auton
         final var idle = new SwerveRequest.Idle();
         return Commands.sequence(
