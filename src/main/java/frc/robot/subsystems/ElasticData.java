@@ -7,16 +7,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Telemetry;
 
 public class ElasticData extends SubsystemBase{
-    PhotonVision cameraData = new PhotonVision("testingCamera");
     private final Telemetry telemetry;
+    private final PhotonVision cameraData;
 
-    public ElasticData(Telemetry m_telemetry){
+    public ElasticData(Telemetry m_telemetry, PhotonVision camera){
         telemetry = m_telemetry;
+        cameraData = camera;
     }
 
     @Override
     public void periodic(){
-        cameraData.update();
         boolean targetVisible = cameraData.targetVisible();
         double[] targetIDs = cameraData.getIDs().stream()
         .mapToDouble(Double::doubleValue)
@@ -46,26 +46,25 @@ public class ElasticData extends SubsystemBase{
         }
     
         SmartDashboard.putData("Swerve Drive", new Sendable() {
-
-      @Override      
-        public void initSendable(SendableBuilder builder) {
-          builder.setSmartDashboardType("SwerveDrive");
+            @Override      
+            public void initSendable(SendableBuilder builder) {
+                builder.setSmartDashboardType("SwerveDrive");
       
-          builder.addDoubleProperty("Front Left Angle", () -> telemetry.m_moduleDirections[0].getAngle() /* * 2 * Math.PI */, null);
-          builder.addDoubleProperty("Front Left Velocity", () -> telemetry.m_moduleSpeeds[0].getLength(), null);
+                builder.addDoubleProperty("Front Left Angle", () -> telemetry.m_moduleDirections[0].getAngle() /* * 2 * Math.PI */, null);
+                builder.addDoubleProperty("Front Left Velocity", () -> telemetry.m_moduleSpeeds[0].getLength(), null);
       
-          builder.addDoubleProperty("Front Right Angle", () -> telemetry.m_moduleDirections[2].getAngle() /* * 2 * Math.PI */, null);
-          builder.addDoubleProperty("Front Right Velocity", ()  -> telemetry.m_moduleSpeeds[2].getLength(), null);
+                builder.addDoubleProperty("Front Right Angle", () -> telemetry.m_moduleDirections[2].getAngle() /* * 2 * Math.PI */, null);
+                builder.addDoubleProperty("Front Right Velocity", ()  -> telemetry.m_moduleSpeeds[2].getLength(), null);
       
-          builder.addDoubleProperty("Back Left Angle", () -> telemetry.m_moduleDirections[3].getAngle() /*  * 2 * Math.PI */, null);
-          builder.addDoubleProperty("Back Left Velocity", () -> telemetry.m_moduleSpeeds[3].getLength(), null);
+                builder.addDoubleProperty("Back Left Angle", () -> telemetry.m_moduleDirections[3].getAngle() /*  * 2 * Math.PI */, null);
+                builder.addDoubleProperty("Back Left Velocity", () -> telemetry.m_moduleSpeeds[3].getLength(), null);
       
-          builder.addDoubleProperty("Back Right Angle", () -> telemetry.m_moduleDirections[1].getAngle() /*  * 2 * Math.PI */, null);
-          builder.addDoubleProperty("Back Right Velocity", () -> telemetry.m_moduleSpeeds[1].getLength(), null);
+                builder.addDoubleProperty("Back Right Angle", () -> telemetry.m_moduleDirections[1].getAngle() /*  * 2 * Math.PI */, null);
+                builder.addDoubleProperty("Back Right Velocity", () -> telemetry.m_moduleSpeeds[1].getLength(), null);
       
-          builder.addDoubleProperty("Robot Angle", () -> telemetry.m_poseArray[2], null);
-        } 
-      });
+                builder.addDoubleProperty("Robot Angle", () -> telemetry.m_poseArray[2], null);
+            } 
+        });
     }
 
     

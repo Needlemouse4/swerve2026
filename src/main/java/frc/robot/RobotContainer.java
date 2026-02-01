@@ -21,6 +21,7 @@ import frc.robot.generated.OldTunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.VisionData;
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * OldTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -35,13 +36,13 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private ElasticData elasticData = new ElasticData(logger);
+    private PhotonVision vision = new PhotonVision("testingCamera");
+
+    private ElasticData elasticData = new ElasticData(logger, vision);
 
     private final double MaxYaw = 90;
 
     private final CommandXboxController joystick = new CommandXboxController(0);
-    
-    PhotonVision cameraData = new PhotonVision("testingCamera");
 
     public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
 
@@ -57,8 +58,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate((cameraData.getAnyYaw() / MaxYaw) * MaxAngularRate) // Drive counterclockwise with negative X (left)
-
+                    .withRotationalRate(vision.getAnyYaw()/MaxYaw * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -109,7 +109,7 @@ public class RobotContainer {
         );
     }
     public Command moveAprilTagLeft() {
-        if (cameraData.getAnyYaw() == 0) {
+        if (vision.getAnyYaw() == 0) {
             return Commands.sequence(
                 drivetrain.applyRequest(() ->
                 drive.withRotationalRate(-1 * MaxAngularRate) // Drive so that april tag is left 
@@ -121,7 +121,7 @@ public class RobotContainer {
         }
     }
     public Command moveAprilTagRight() {
-       if (cameraData.getAnyYaw() == 0) {
+       if (vision.getAnyYaw() == 0) {
             return Commands.sequence(
                 
                 drivetrain.applyRequest(() ->
@@ -133,7 +133,7 @@ public class RobotContainer {
         }
     }
     public Command print() {
-        System.err.println(cameraData.getAnyYaw()/MaxYaw * MaxAngularRate);
+        System.err.println(vision.getAnyYaw()/MaxYaw * MaxAngularRate);
         return Commands.sequence();
     }
 }
