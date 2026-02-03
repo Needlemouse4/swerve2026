@@ -80,7 +80,6 @@ public class RobotContainer {
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        joystick.x().onTrue(print());
         //joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
         //joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
 
@@ -109,7 +108,7 @@ public class RobotContainer {
         );
     }
     public Command moveAprilTagLeft() {
-        if (vision.getAnyYaw() == 0) {
+        if ((vision.getAnyYaw() <= 10) && (vision.getAnyYaw() >= -10)) {
             return Commands.sequence(
                 drivetrain.applyRequest(() ->
                 drive.withRotationalRate(-1 * MaxAngularRate) // Drive so that april tag is left 
@@ -121,7 +120,7 @@ public class RobotContainer {
         }
     }
     public Command moveAprilTagRight() {
-       if (vision.getAnyYaw() == 0) {
+       if ((vision.getAnyYaw() <= 10) && (vision.getAnyYaw() >= -10)) {
             return Commands.sequence(
                 
                 drivetrain.applyRequest(() ->
@@ -131,9 +130,5 @@ public class RobotContainer {
         } else {
             return Commands.sequence(); //Do nothing     
         }
-    }
-    public Command print() {
-        System.err.println(vision.getAnyYaw()/MaxYaw * MaxAngularRate);
-        return Commands.sequence();
     }
 }
