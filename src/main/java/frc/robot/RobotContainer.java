@@ -40,7 +40,7 @@ public class RobotContainer {
 
     private ElasticData elasticData = new ElasticData(logger, vision);
 
-    private final double MaxYaw = 36;
+    private final double MaxYaw = 42;
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
@@ -57,9 +57,10 @@ public class RobotContainer {
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
                 drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate((vision.getAnyYaw()/MaxYaw) * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            )
+                    .withVelocityY((vision.getAnyYaw()/MaxYaw) * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(0 * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                    //Zero is a placeholder value
+                )       
         );
 
         // Idle while the robot is disabled. This ensures the configured
