@@ -40,7 +40,7 @@ public class RobotContainer {
 
     private ElasticData elasticData = new ElasticData(logger, vision);
 
-    private final double MaxYaw = 90;
+    private final double MaxYaw = 36;
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
