@@ -8,7 +8,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import edu.wpi.first.vision.VisionPipeline;
+import edu.wpi.first.math.geometry.Transform3d;
 
 public class VisionData{
     //making the variable for the camera used--
@@ -119,10 +119,15 @@ public class VisionData{
 
 
 
+
+    public Transform3d findRobotPos(){
+        var cameraResult = latestResult.getMultiTagResult();
+        var fieldToCamera = cameraResult.get().estimatedPose.best;
+        return fieldToCamera;
+    }
     public void pipelineSwitcher(int pipelineID){
         camera.setPipelineIndex(pipelineID);
     }
-
     public double getPipelineMethod(){
         return camera.getPipelineIndex();
     }
