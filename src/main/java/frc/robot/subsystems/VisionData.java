@@ -8,6 +8,8 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.geometry.Transform3d;
+
 public class VisionData{
     //making the variable for the camera used--
     //when using this class and making the variable for the--
@@ -115,7 +117,10 @@ public class VisionData{
         return getTargetYaw(tagID).isPresent();
     }
 
-
-
+    public Transform3d findRobotPos(){
+        var cameraResult = latestResult.getMultiTagResult();
+        var fieldToCamera = cameraResult.get().estimatedPose.best;
+        return fieldToCamera;
+    }
 
 }

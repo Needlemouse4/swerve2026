@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Telemetry;
@@ -13,7 +15,7 @@ public class ElasticData extends SubsystemBase{
     public ElasticData(Telemetry m_telemetry, PhotonVision camera){
         telemetry = m_telemetry;
         cameraData = camera;
-
+        
         SmartDashboard.putData("Swerve Drive", new Sendable() {
             @Override      
             public void initSendable(SendableBuilder builder) {
@@ -43,12 +45,15 @@ public class ElasticData extends SubsystemBase{
         .mapToDouble(Double::doubleValue)
         .toArray();
         double ambiguity = cameraData.getAmbiguity();
-
+        var field2d = new Field2d();
+        var Pose2d = new Pose2d(cameraData.getRobotPos().getX(), cameraData.getRobotPos().getY(), cameraData.getRobotPos().getRotation().toRotation2d());
+        field2d.setRobotPose(Pose2d);
         SmartDashboard.putNumber("raw pitch", cameraData.getAnyPitch());
         SmartDashboard.putNumber("raw yaw", cameraData.getAnyYaw());
         SmartDashboard.putNumberArray("Target IDs", targetIDs);
         SmartDashboard.putBoolean("Target Visible", targetVisible);
         SmartDashboard.putNumber("Ambiguity", ambiguity);
+        SmartDashboard.putData("Robot Position", field2d);
         for(var id : targetIDs){
             double yaw = cameraData
             .getTargetYaw((int) id)
