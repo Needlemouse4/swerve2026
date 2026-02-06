@@ -8,6 +8,8 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.vision.VisionPipeline;
+
 public class VisionData{
     //making the variable for the camera used--
     //when using this class and making the variable for the--
@@ -117,5 +119,11 @@ public class VisionData{
 
 
 
+    public void pipelineSwitcher(int pipelineID){
+        camera.setPipelineIndex(pipelineID);
+    }
 
+    public double getPipelineMethod(){
+        return camera.getPipelineIndex();
+    }
 }

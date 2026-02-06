@@ -10,6 +10,7 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -20,6 +21,7 @@ import frc.robot.generated.OldTunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 //import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.VisionData;
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * OldTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -79,6 +81,7 @@ public class RobotContainer {
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        joystick.x().onTrue(pipelineSwitcher());
         //joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
         //joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
 
@@ -129,5 +132,22 @@ public class RobotContainer {
         } else {
             return Commands.sequence(); //Do nothing     
         }
+    }
+
+    public Command pipelineSwitcher(){
+        VisionData visionData = new VisionData("testingCamera");
+        return Commands.runOnce(()->{
+            if (visionData.getPipelineMethod() == 0) {
+                visionData.pipelineSwitcher(1);
+                SmartDashboard.putNumber("Pipeline",visionData.getPipelineMethod());
+            }
+            else{
+                visionData.pipelineSwitcher(0);
+                SmartDashboard.putNumber("Pipeline",visionData.getPipelineMethod());
+            }
+        });
+        
+        
+        
     }
 }
