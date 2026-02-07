@@ -26,6 +26,7 @@ public class VisionData{
     //all methods in the file.
     private PhotonCamera camera;
     private PhotonPipelineResult latestResult;
+    Field2d field2d = new Field2d();
 
     //the constructor, having the camera as a parameter--
     //means the methods in this class can be used dynamically--
@@ -141,14 +142,13 @@ public class VisionData{
         if (latestResult != null && latestResult.hasTargets()){
             var cameraResult = latestResult.getMultiTagResult();
             var fieldToCamera = cameraResult.get().estimatedPose.best;
-            final Field2d field2d = new Field2d();
-            final Pose2d Pose2d = new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d());
-            field2d.setRobotPose(Pose2d);
-            return field2d;
+            //Pose2d Pose2d = new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d());
+            //field2d.setRobotPose(Pose2d);
+            field2d.setRobotPose(null);
         } else {
-            return null;
+            field2d.setRobotPose(null);
         }
-        
+        return field2d;
     }
     public void getRotation2d(){
         var target = latestResult.getBestTarget();
