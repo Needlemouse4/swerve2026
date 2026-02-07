@@ -38,7 +38,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
 
-    private final double speedDamper = 4;
+    private final double speedDamper = 0;
 
     public RobotContainer() {
         configureBindings();
