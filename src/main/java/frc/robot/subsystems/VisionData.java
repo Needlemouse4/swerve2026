@@ -173,4 +173,14 @@ public class VisionData{
         }
     }
 
+    public double getXRotation(){
+        if (latestResult != null && latestResult.hasTargets()){
+            var target = latestResult.getBestTarget();
+            double rotationX = target.getBestCameraToTarget().getRotation().getX();
+            return rotationX;
+        } else {
+            return 0.0;
+        }
+    }
+
 }

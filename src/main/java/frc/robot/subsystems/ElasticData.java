@@ -45,6 +45,7 @@ public class ElasticData extends SubsystemBase{
         .mapToDouble(Double::doubleValue)
         .toArray();
         double yRotation = cameraData.getYRotation();
+        double xRotation = cameraData.getXRotation();
             //Pose2d.
             //= new Pose2d(cameraData.getRobotPos().getX(), cameraData.getRobotPos().getY(), cameraData.getRobotPos().getRotation().toRotation2d());
         double ambiguity = cameraData.getAmbiguity();
@@ -55,7 +56,7 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Ambiguity", ambiguity);
         //SmartDashboard.putData("Robot Position", cameraData.getRobotPos());
         SmartDashboard.putNumber("Y Rotation", yRotation);
-
+        SmartDashboard.putNumber("X Rotation", xRotation);
 
         for(var id : targetIDs){
             double yaw = cameraData

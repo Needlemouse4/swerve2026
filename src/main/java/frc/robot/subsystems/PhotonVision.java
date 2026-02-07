@@ -63,4 +63,8 @@ public class PhotonVision extends SubsystemBase{
         return vision.getYRotation();
     }
 
+    public double getXRotation(){
+        return vision.getXRotation();
+    }
+
 }
