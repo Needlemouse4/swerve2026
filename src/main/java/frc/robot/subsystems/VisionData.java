@@ -126,35 +126,20 @@ public class VisionData{
         return getTargetYaw(tagID).isPresent();
     }
 
-    public Pose2d getPose2d(){
-        if (latestResult != null && latestResult.hasTargets()){
-            var cameraResult = latestResult.getMultiTagResult();
-            var fieldToCamera = cameraResult.get().estimatedPose.best;
-            final Pose2d Pose2d = new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d());
-            return Pose2d;
-        } else {
-            return null;
-        }
-    }
-
-
     public Field2d findRobotPos(){
         if (latestResult != null && latestResult.hasTargets()){
             var cameraResult = latestResult.getMultiTagResult();
             var fieldToCamera = cameraResult.get().estimatedPose.best;
-            //Pose2d Pose2d = new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d());
-            //field2d.setRobotPose(Pose2d);
-            field2d.setRobotPose(null);
+            System.out.println("X: " + fieldToCamera.getX());
+            System.out.println("Y: " + fieldToCamera.getY());
+            System.out.println("Rotation: " + fieldToCamera.getRotation().toRotation2d());
+            Pose2d Pose2d = new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d());
+            field2d.setRobotPose(Pose2d);
+            //field2d.setRobotPose(null);
         } else {
             field2d.setRobotPose(null);
         }
         return field2d;
-    }
-    public void getRotation2d(){
-        var target = latestResult.getBestTarget();
-        Pose2d pose2d = getPose2d();
-        //Transform2d targetPose = target.
-        //Rotation2d targetYaw = PhotonUtils.getYawToPose(pose2d, targetPose);
     }
     public void pipelineSwitcher(int pipelineID){
         camera.setPipelineIndex(pipelineID);
