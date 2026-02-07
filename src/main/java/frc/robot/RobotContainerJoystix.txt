@@ -38,6 +38,8 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
 
+    private final double speedDamper = 4;
+
     public RobotContainer() {
         configureBindings();
     }
@@ -48,9 +50,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) / speedDamper) // Drive forward with negative Y (forward)
+                    .withVelocityY((-joystick.getLeftX() * MaxSpeed) / speedDamper) // Drive left with negative X (left)
+                    .withRotationalRate((-joystick.getRightX() * MaxAngularRate) / speedDamper) // Drive counterclockwise with negative X (left)
             )
         );
 
