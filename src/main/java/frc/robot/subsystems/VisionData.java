@@ -162,4 +162,15 @@ public class VisionData{
     public double getPipelineMethod(){
         return camera.getPipelineIndex();
     }
+
+    public double getYRotation(){
+        if (latestResult != null && latestResult.hasTargets()){
+            var target = latestResult.getBestTarget();
+            double rotationY = target.getBestCameraToTarget().getRotation().getY();
+            return rotationY;
+        } else {
+            return 0.0;
+        }
+    }
+
 }
