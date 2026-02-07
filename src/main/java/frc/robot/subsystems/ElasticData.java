@@ -8,27 +8,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Telemetry;
 
-import org.photonvision.PhotonCamera;
-import org.photonvision.estimation.TargetModel;
-import org.photonvision.simulation.PhotonCameraSim;
-import org.photonvision.simulation.SimCameraProperties;
-import org.photonvision.simulation.VisionSystemSim;
-import org.photonvision.simulation.VisionTargetSim;
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.kinematics.Odometry3d;
-
 public class ElasticData extends SubsystemBase{
     private final Telemetry telemetry;
     private final PhotonVision cameraData;
+    //final Field2d field2d = new Field2d();
+    //final Pose2d Pose2d = new Pose2d();
 
     public ElasticData(Telemetry m_telemetry, PhotonVision camera){
         telemetry = m_telemetry;
         cameraData = camera;
-        
         SmartDashboard.putData("Swerve Drive", new Sendable() {
             @Override      
             public void initSendable(SendableBuilder builder) {
@@ -49,6 +37,7 @@ public class ElasticData extends SubsystemBase{
                 builder.addDoubleProperty("Robot Angle", () -> telemetry.m_poseArray[2], null);
             } 
         });
+
     }
 
     @Override
@@ -57,29 +46,18 @@ public class ElasticData extends SubsystemBase{
         double[] targetIDs = cameraData.getIDs().stream()
         .mapToDouble(Double::doubleValue)
         .toArray();
+            //Pose2d.
+            //= new Pose2d(cameraData.getRobotPos().getX(), cameraData.getRobotPos().getY(), cameraData.getRobotPos().getRotation().toRotation2d());
+
+        //field2d.setRobotPose(Pose2d);
         double ambiguity = cameraData.getAmbiguity();
-        var field2d = new Field2d();
-        var Pose2d = new Pose2d(cameraData.getRobotPos().getX(), cameraData.getRobotPos().getY(), cameraData.getRobotPos().getRotation().toRotation2d());
-        field2d.setRobotPose(Pose2d);
+        System.out.println("ElasticData is running");
         SmartDashboard.putNumber("raw pitch", cameraData.getAnyPitch());
         SmartDashboard.putNumber("raw yaw", cameraData.getAnyYaw());
         SmartDashboard.putNumberArray("Target IDs", targetIDs);
         SmartDashboard.putBoolean("Target Visible", targetVisible);
         SmartDashboard.putNumber("Ambiguity", ambiguity);
-        SmartDashboard.putData("Robot Position", field2d);
-
-        
-        VisionSystemSim visionSim = new VisionSystemSim("VisionSimField");
-        TargetModel targetModel = new TargetModel(0.5,0.5);
-       // AprilTagFieldLayout aprilTagLayout = new AprilTagFieldLayout();
-        Pose3d pose3d = new Pose3d();
-        VisionTargetSim targetSim = new VisionTargetSim(pose3d, targetModel);
-        visionSim.addVisionTargets(targetSim);
-        SimCameraProperties simCamObj = new SimCameraProperties();
-        PhotonCamera cam = new PhotonCamera("testingCamera");
-        PhotonCameraSim simCam = new PhotonCameraSim(cam,simCamObj);
-        visionSim.addCamera(simCam,new Transform3d(new Translation3d(4,4,4),new Rotation3d(3,3,3)));
-        
+        //SmartDashboard.putData("Robot Position", field2d);
         
         for(var id : targetIDs){
             double yaw = cameraData
