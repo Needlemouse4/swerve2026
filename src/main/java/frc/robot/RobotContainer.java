@@ -29,7 +29,7 @@ public class RobotContainer {
     //MaxSpeed * 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.2) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
             private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -60,7 +60,7 @@ public class RobotContainer {
             drivetrain.applyRequest(() ->
                 drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) / speedDamper) //Drive forward with negative Y (forward)
                     .withVelocityY(((-vision.getAnyYaw()/MaxYaw) * MaxSpeed) / speedDamper) //Drive left with negative X (left)
-                    .withRotationalRate((0 * MaxAngularRate) / speedDamper) // Don't rotate Drive counterclockwise with negative X (left)
+                    .withRotationalRate((1 - (vision.getZRotation()/Math.PI) * MaxAngularRate) / speedDamper) // Don't rotate Drive counterclockwise with negative X (left)
                     //Zero is a placeholder value
                 )       
         );
