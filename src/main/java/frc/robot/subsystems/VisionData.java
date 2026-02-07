@@ -162,4 +162,35 @@ public class VisionData{
     public double getPipelineMethod(){
         return camera.getPipelineIndex();
     }
+
+    public double getYRotation(){
+        if (latestResult != null && latestResult.hasTargets()){
+            var target = latestResult.getBestTarget();
+            double rotationY = target.getBestCameraToTarget().getRotation().getY();
+            return rotationY;
+        } else {
+            return 0.0;
+        }
+    }
+
+    public double getXRotation(){
+        if (latestResult != null && latestResult.hasTargets()){
+            var target = latestResult.getBestTarget();
+            double rotationX = target.getBestCameraToTarget().getRotation().getX();
+            return rotationX;
+        } else {
+            return 0.0;
+        }
+    }
+
+    public double getZRotation(){
+        if (latestResult != null && latestResult.hasTargets()){
+            var target = latestResult.getBestTarget();
+            double rotationZ = target.getBestCameraToTarget().getRotation().getZ();
+            return rotationZ;
+        } else {
+            return 0.0;
+        }
+    }
+
 }

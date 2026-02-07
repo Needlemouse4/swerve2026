@@ -58,4 +58,17 @@ public class PhotonVision extends SubsystemBase{
     public Field2d getRobotPos(){
         return vision.findRobotPos();
     }
+
+    public double getYRotation(){
+        return vision.getYRotation();
+    }
+
+    public double getXRotation(){
+        return vision.getXRotation();
+    }
+
+    public double getZRotation(){
+        return vision.getZRotation();
+    }
+
 }
