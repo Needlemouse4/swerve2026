@@ -42,6 +42,8 @@ public class RobotContainer {
 
     private final double MaxYaw = 42;
 
+    private final double speedDamper = 4;
+
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
@@ -56,8 +58,8 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) / 4) // Halved Speed, Drive forward with negative Y (forward)
-                    .withVelocityY(((vision.getAnyYaw()/MaxYaw) * MaxSpeed) / 4) // Halved Speed, Drive left with negative X (left)
+                drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) / speedDamper) // Halved Speed, Drive forward with negative Y (forward)
+                    .withVelocityY(((vision.getAnyYaw()/MaxYaw) * MaxSpeed) / speedDamper) // Halved Speed, Drive left with negative X (left)
                     .withRotationalRate(0 * MaxAngularRate) // Don't rotate Drive counterclockwise with negative X (left)
                     //Zero is a placeholder value
                 )       
