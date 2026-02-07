@@ -8,6 +8,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Telemetry;
 
+import org.photonvision.PhotonCamera;
+import org.photonvision.estimation.TargetModel;
+import org.photonvision.simulation.PhotonCameraSim;
+import org.photonvision.simulation.SimCameraProperties;
+import org.photonvision.simulation.VisionSystemSim;
+import org.photonvision.simulation.VisionTargetSim;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.Odometry3d;
+
 public class ElasticData extends SubsystemBase{
     private final Telemetry telemetry;
     private final PhotonVision cameraData;
@@ -54,6 +67,20 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putBoolean("Target Visible", targetVisible);
         SmartDashboard.putNumber("Ambiguity", ambiguity);
         SmartDashboard.putData("Robot Position", field2d);
+
+        
+        VisionSystemSim visionSim = new VisionSystemSim("VisionSimField");
+        TargetModel targetModel = new TargetModel(0.5,0.5);
+       // AprilTagFieldLayout aprilTagLayout = new AprilTagFieldLayout();
+        Pose3d pose3d = new Pose3d();
+        VisionTargetSim targetSim = new VisionTargetSim(pose3d, targetModel);
+        visionSim.addVisionTargets(targetSim);
+        SimCameraProperties simCamObj = new SimCameraProperties();
+        PhotonCamera cam = new PhotonCamera("testingCamera");
+        PhotonCameraSim simCam = new PhotonCameraSim(cam,simCamObj);
+        visionSim.addCamera(simCam,new Transform3d(new Translation3d(4,4,4),new Rotation3d(3,3,3)));
+        
+        
         for(var id : targetIDs){
             double yaw = cameraData
             .getTargetYaw((int) id)
@@ -70,6 +97,8 @@ public class ElasticData extends SubsystemBase{
                 SmartDashboard.putNumber("Target" + id + "pitch", pitch);
             }
         }
+        
+        
         
         SmartDashboard.updateValues();
 
