@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import java.util.List;
 import java.util.OptionalDouble;
 
-import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class PhotonVision extends SubsystemBase{
@@ -51,7 +51,11 @@ public class PhotonVision extends SubsystemBase{
         return vision.getTargetPitch(id);
     }
 
-    public Transform3d getRobotPos(){
+    //public Pose2d getPose2d(){
+        //return vision.getPose2d();
+    //}
+
+    public Field2d getRobotPos(){
         return vision.findRobotPos();
     }
 }

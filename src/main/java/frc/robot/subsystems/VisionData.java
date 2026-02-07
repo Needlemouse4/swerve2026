@@ -1,14 +1,22 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Rotation;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 public class VisionData{
     //making the variable for the camera used--
@@ -117,18 +125,36 @@ public class VisionData{
         return getTargetYaw(tagID).isPresent();
     }
 
-
-
-
-    public Transform3d findRobotPos(){
+    public Pose2d getPose2d(){
         if (latestResult != null && latestResult.hasTargets()){
             var cameraResult = latestResult.getMultiTagResult();
             var fieldToCamera = cameraResult.get().estimatedPose.best;
-            return fieldToCamera;
+            final Pose2d Pose2d = new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d());
+            return Pose2d;
+        } else {
+            return null;
+        }
+    }
+
+
+    public Field2d findRobotPos(){
+        if (latestResult != null && latestResult.hasTargets()){
+            var cameraResult = latestResult.getMultiTagResult();
+            var fieldToCamera = cameraResult.get().estimatedPose.best;
+            final Field2d field2d = new Field2d();
+            final Pose2d Pose2d = new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d());
+            field2d.setRobotPose(Pose2d);
+            return field2d;
         } else {
             return null;
         }
         
+    }
+    public void getRotation2d(){
+        var target = latestResult.getBestTarget();
+        Pose2d pose2d = getPose2d();
+        //Transform2d targetPose = target.
+        //Rotation2d targetYaw = PhotonUtils.getYawToPose(pose2d, targetPose);
     }
     public void pipelineSwitcher(int pipelineID){
         camera.setPipelineIndex(pipelineID);

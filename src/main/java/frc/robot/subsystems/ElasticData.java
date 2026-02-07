@@ -11,7 +11,6 @@ import frc.robot.Telemetry;
 public class ElasticData extends SubsystemBase{
     private final Telemetry telemetry;
     private final PhotonVision cameraData;
-    final Field2d field2d = new Field2d();
 
     public ElasticData(Telemetry m_telemetry, PhotonVision camera){
         telemetry = m_telemetry;
@@ -47,15 +46,13 @@ public class ElasticData extends SubsystemBase{
         .toArray();
             //Pose2d.
             //= new Pose2d(cameraData.getRobotPos().getX(), cameraData.getRobotPos().getY(), cameraData.getRobotPos().getRotation().toRotation2d());
-        //final Pose2d Pose2d = new Pose2d(cameraData.getRobotPos().getX(), cameraData.getRobotPos().getY(), cameraData.getRobotPos().getRotation().toRotation2d());
-        //field2d.setRobotPose(Pose2d);
         double ambiguity = cameraData.getAmbiguity();
         SmartDashboard.putNumber("raw pitch", cameraData.getAnyPitch());
         SmartDashboard.putNumber("raw yaw", cameraData.getAnyYaw());
         SmartDashboard.putNumberArray("Target IDs", targetIDs);
         SmartDashboard.putBoolean("Target Visible", targetVisible);
         SmartDashboard.putNumber("Ambiguity", ambiguity);
-        //SmartDashboard.putData("Robot Position", field2d);
+        //SmartDashboard.putData("Robot Position", cameraData.getRobotPos());
         
         for(var id : targetIDs){
             double yaw = cameraData
