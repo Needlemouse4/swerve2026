@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.OldTunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-//import frc.robot.subsystems.ElasticData;
+import frc.robot.subsystems.ElasticData;
 import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.VisionData;
 
@@ -38,11 +38,11 @@ public class RobotContainer {
 
     private PhotonVision vision = new PhotonVision("testingCamera");
 
-    //private ElasticData elasticData = new ElasticData(logger, vision);
+    private ElasticData elasticData = new ElasticData(logger, vision);
 
-    private final double MaxYaw = 42;
+    private final double MaxYaw = 29;
 
-    private final double speedDamper = 4;
+    private final double speedDamper = 3.5;
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
@@ -59,8 +59,8 @@ public class RobotContainer {
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
                 drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) / speedDamper) // Halved Speed, Drive forward with negative Y (forward)
-                    .withVelocityY(((vision.getAnyYaw()/MaxYaw) * MaxSpeed) / speedDamper) // Halved Speed, Drive left with negative X (left)
-                    .withRotationalRate(0 * MaxAngularRate) // Don't rotate Drive counterclockwise with negative X (left)
+                    .withVelocityY(((-vision.getAnyYaw()/MaxYaw) * MaxSpeed) / speedDamper) // Halved Speed, Drive left with negative X (left)
+                    .withRotationalRate((0 * MaxAngularRate) / speedDamper) // Don't rotate Drive counterclockwise with negative X (left)
                     //Zero is a placeholder value
                 )       
         );
