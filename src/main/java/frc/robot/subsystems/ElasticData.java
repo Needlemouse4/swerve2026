@@ -46,7 +46,7 @@ public class ElasticData extends SubsystemBase{
         .toArray();
         double yRotation = cameraData.getYRotation();
         double xRotation = cameraData.getXRotation();
-        double zRotation = cameraData.getXRotation();
+        double zRotation = cameraData.getZRotation();
             //Pose2d.
             //= new Pose2d(cameraData.getRobotPos().getX(), cameraData.getRobotPos().getY(), cameraData.getRobotPos().getRotation().toRotation2d());
         double ambiguity = cameraData.getAmbiguity();
