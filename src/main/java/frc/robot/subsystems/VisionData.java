@@ -121,9 +121,14 @@ public class VisionData{
 
 
     public Transform3d findRobotPos(){
-        var cameraResult = latestResult.getMultiTagResult();
-        var fieldToCamera = cameraResult.get().estimatedPose.best;
-        return fieldToCamera;
+        if (latestResult != null && latestResult.hasTargets()){
+            var cameraResult = latestResult.getMultiTagResult();
+            var fieldToCamera = cameraResult.get().estimatedPose.best;
+            return fieldToCamera;
+        } else {
+            return null;
+        }
+        
     }
     public void pipelineSwitcher(int pipelineID){
         camera.setPipelineIndex(pipelineID);
