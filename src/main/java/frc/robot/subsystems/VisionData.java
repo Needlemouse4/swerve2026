@@ -193,4 +193,8 @@ public class VisionData{
         }
     }
 
+    public double targetDistance(){
+        
+    }
+
 }
