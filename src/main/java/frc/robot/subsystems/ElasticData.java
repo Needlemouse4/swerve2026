@@ -11,7 +11,8 @@ import frc.robot.Telemetry;
 public class ElasticData extends SubsystemBase{
     private final Telemetry telemetry;
     private final PhotonVision cameraData;
-
+    Field2d Field2d = new Field2d();
+    VisionData VisionData = new VisionData("testingCamera");
     public ElasticData(Telemetry m_telemetry, PhotonVision camera){
         telemetry = m_telemetry;
         cameraData = camera;
@@ -37,7 +38,6 @@ public class ElasticData extends SubsystemBase{
         });
 
     }
-
     @Override
     public void periodic(){
         boolean targetVisible = cameraData.targetVisible();
@@ -61,8 +61,10 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("X Rotation", xRotation);
         SmartDashboard.putNumber("Z Rotation", zRotation);
         SmartDashboard.putNumber("Distance", distance);
-
-
+        SmartDashboard.putData("Field",Field2d);
+        if(cameraData.targetVisible() == true){
+            VisionData.findRobotPos();
+        }
         for(var id : targetIDs){
             double yaw = cameraData
             .getTargetYaw((int) id)
