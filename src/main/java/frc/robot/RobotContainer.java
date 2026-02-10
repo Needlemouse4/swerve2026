@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
+import edu.wpi.first.hal.ThreadsJNI;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,6 +47,10 @@ public class RobotContainer {
 
     private final double desiredDistance = 2;
 
+    private double driveWithAprilTag = 1;
+
+    private double driveWithStick = 0;
+
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
@@ -60,10 +65,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(((vision.getDistance() - desiredDistance) * MaxSpeed) / speedDamper) //Drive forward with negative Y (forward)
-                    .withVelocityY(((-vision.getAnyYaw()/MaxYaw) * MaxSpeed) / speedDamper) //Drive left with negative X (left)
-                    .withRotationalRate((1 - (vision.getZRotation()/Math.PI) * MaxAngularRate) / speedDamper) // Don't rotate Drive counterclockwise with negative X (left)
-                    //Zero is a placeholder value
+                drive.withVelocityX((((vision.getDistance() - desiredDistance) * driveWithAprilTag) + (-joystick.getLeftY() * driveWithStick) * MaxSpeed) / speedDamper) //Drive forward with negative Y (forward)
+                    .withVelocityY((((-vision.getAnyYaw()/MaxYaw) * driveWithAprilTag) + (-joystick.getLeftX() * driveWithStick) * MaxSpeed) / speedDamper) //Drive left with negative X (left)
+                    .withRotationalRate((((1 - (vision.getZRotation()/Math.PI)) * driveWithAprilTag ) + (-joystick.getRightX() * driveWithStick) * MaxAngularRate) / speedDamper) // Don't rotate Drive counterclockwise with negative X (left)
                 )       
         );
 
@@ -86,6 +90,7 @@ public class RobotContainer {
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         joystick.x().onTrue(pipelineSwitcher());
+        joystick.a().onTrue(toggleJoystix());
         //joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
         //joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
 
@@ -136,6 +141,19 @@ public class RobotContainer {
         } else {
             return Commands.sequence(); //Do nothing     
         }
+    }
+
+    public Command toggleJoystix(){
+        return Commands.runOnce(()->{
+            if (driveWithAprilTag == 1) {
+                driveWithAprilTag = 0;
+                driveWithStick = 1;
+            } else {
+                driveWithStick = 0;
+                driveWithAprilTag = 1;
+                //This is a toggle button in between the two, I use 1 and 0 instead of true and false because it is a number that is multiplyed by the different speeds.
+            }
+        });
     }
 
     public Command pipelineSwitcher(){
