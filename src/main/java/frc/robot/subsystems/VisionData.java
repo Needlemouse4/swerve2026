@@ -129,13 +129,17 @@ public class VisionData{
     public Field2d findRobotPos(){
         if (latestResult != null && latestResult.hasTargets()){
             var cameraResult = latestResult.getMultiTagResult();
-            var fieldToCamera = cameraResult.get().estimatedPose.best;
-            System.out.println("X: " + fieldToCamera.getX());
-            System.out.println("Y: " + fieldToCamera.getY());
-            System.out.println("Rotation: " + fieldToCamera.getRotation().toRotation2d());
-            Pose2d Pose2d = new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d());
-            field2d.setRobotPose(Pose2d);
-            //field2d.setRobotPose(null);
+            if (cameraResult != null) {
+                var fieldToCamera = cameraResult.get().estimatedPose.best;
+                System.out.println("X: " + fieldToCamera.getX());
+                System.out.println("Y: " + fieldToCamera.getY());
+                System.out.println("Rotation: " + fieldToCamera.getRotation().toRotation2d());
+                Pose2d Pose2d = new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d());
+                field2d.setRobotPose(Pose2d);
+                //field2d.setRobotPose(null);
+            } else {
+                field2d.setRobotPose(null); //Maybe not such a good idea
+            }
         } else {
             field2d.setRobotPose(null);
         }
