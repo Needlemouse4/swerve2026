@@ -44,6 +44,8 @@ public class RobotContainer {
 
     private final double speedDamper = 3.5;
 
+    private final double desiredDistance = 2;
+
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
@@ -58,7 +60,7 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX((-joystick.getLeftY() * MaxSpeed) / speedDamper) //Drive forward with negative Y (forward)
+                drive.withVelocityX(((vision.getDistance() - desiredDistance) * MaxSpeed) / speedDamper) //Drive forward with negative Y (forward)
                     .withVelocityY(((-vision.getAnyYaw()/MaxYaw) * MaxSpeed) / speedDamper) //Drive left with negative X (left)
                     .withRotationalRate((1 - (vision.getZRotation()/Math.PI) * MaxAngularRate) / speedDamper) // Don't rotate Drive counterclockwise with negative X (left)
                     //Zero is a placeholder value
