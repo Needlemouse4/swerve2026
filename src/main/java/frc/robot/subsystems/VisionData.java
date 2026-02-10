@@ -178,4 +178,13 @@ public class VisionData{
         }
     }
 
+    public double getDistance(){
+        if (latestResult != null && latestResult.hasTargets()){
+            var target = latestResult.getBestTarget();
+            double distance = target.getBestCameraToTarget().getTranslation().getX();
+            return distance;
+        }
+        return 0.0;
+    }
+
 }
