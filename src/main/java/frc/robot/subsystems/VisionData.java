@@ -134,8 +134,8 @@ public class VisionData{
                 System.out.println("X: " + fieldToCamera.getX());
                 System.out.println("Y: " + fieldToCamera.getY());
                 System.out.println("Rotation: " + fieldToCamera.getRotation().toRotation2d());
-                Pose2d Pose2d = new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d());
-                field2d.setRobotPose(Pose2d);
+                //Pose2d Pose2d = new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d());
+                field2d.setRobotPose(new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d()));
                 //field2d.setRobotPose(null);
             } else {
                 field2d.setRobotPose(null); //Maybe not such a good idea
