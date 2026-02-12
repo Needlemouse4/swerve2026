@@ -145,12 +145,15 @@ public class RobotContainer {
 
     public Command toggleJoystix(){
         return Commands.runOnce(()->{
+            System.out.printerr("Toggle Runs");
             if (driveWithAprilTag == 1) {
                 driveWithAprilTag = 0;
                 driveWithStick = 1;
+                System.out.println("Controller Controls");
             } else {
                 driveWithStick = 0;
                 driveWithAprilTag = 1;
+                System.out.println("April Tag Controls");
                 //This is a toggle button in between the two, I use 1 and 0 instead of true and false because it is a number that is multiplyed by the different speeds.
             }
         });
