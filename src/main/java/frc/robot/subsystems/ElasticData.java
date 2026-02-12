@@ -56,14 +56,14 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumberArray("Target IDs", targetIDs);
         SmartDashboard.putBoolean("Target Visible", targetVisible);
         SmartDashboard.putNumber("Ambiguity", ambiguity);
-        //SmartDashboard.putData("Robot Position", cameraData.getRobotPos());
+        SmartDashboard.putData("Robot Position", cameraData.getRobotPos());
         SmartDashboard.putNumber("Y Rotation", yRotation);
         SmartDashboard.putNumber("X Rotation", xRotation);
         SmartDashboard.putNumber("Z Rotation", zRotation);
         SmartDashboard.putNumber("Distance", distance);
         SmartDashboard.putData("Field",Field2d);
         if(cameraData.targetVisible() == true){
-            VisionData.findRobotPos();
+            //VisionData.findRobotPos();
         }
         for(var id : targetIDs){
             double yaw = cameraData

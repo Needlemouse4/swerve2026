@@ -12,6 +12,8 @@ import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -138,10 +140,10 @@ public class VisionData{
                 field2d.setRobotPose(new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d()));
                 //field2d.setRobotPose(null);
             } else {
-                field2d.setRobotPose(null); //Maybe not such a good idea
+                field2d.setRobotPose(new Pose2d()); //Maybe not such a good idea
             }
         } else {
-            field2d.setRobotPose(null);
+            field2d.setRobotPose(new Pose2d());
         }
         return field2d;
     }

@@ -90,7 +90,7 @@ public class RobotContainer {
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         joystick.x().onTrue(pipelineSwitcher());
-        joystick.a().onTrue(toggleJoystix());
+        joystick.y().onTrue(toggleJoystix());
         //joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
         //joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
 
@@ -145,7 +145,7 @@ public class RobotContainer {
 
     public Command toggleJoystix(){
         return Commands.runOnce(()->{
-            System.out.printerr("Toggle Runs");
+            System.out.println("Toggle Runs");
             if (driveWithAprilTag == 1) {
                 driveWithAprilTag = 0;
                 driveWithStick = 1;
