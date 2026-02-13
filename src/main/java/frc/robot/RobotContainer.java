@@ -41,7 +41,7 @@ public class RobotContainer {
 
     private ElasticData elasticData = new ElasticData(logger, vision);
 
-    private final double MaxYaw = 29;
+    private final double MaxYaw = 32;
 
     private final double speedDamper = 3.5;
 
