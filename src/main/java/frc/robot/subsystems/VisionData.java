@@ -131,7 +131,7 @@ public class VisionData{
     public Field2d findRobotPos(){
         if (latestResult != null && latestResult.hasTargets()){
             var cameraResult = latestResult.getMultiTagResult();
-            if (cameraResult != null) {
+            if (cameraResult != null && cameraResult.isEmpty() == false) {
                 var fieldToCamera = cameraResult.get().estimatedPose.best;
                 System.out.println("X: " + fieldToCamera.getX());
                 System.out.println("Y: " + fieldToCamera.getY());
