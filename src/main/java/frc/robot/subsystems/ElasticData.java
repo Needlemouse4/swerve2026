@@ -7,6 +7,10 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Telemetry;
+import frc.robot.generated.OldTunerConstants;
+import static edu.wpi.first.units.Units.*;
+
+
 
 public class ElasticData extends SubsystemBase{
     private final Telemetry telemetry;
@@ -40,6 +44,7 @@ public class ElasticData extends SubsystemBase{
     }
     @Override
     public void periodic(){
+        double MaxSpeed = 1.0 * OldTunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
         boolean targetVisible = cameraData.targetVisible();
         double[] targetIDs = cameraData.getIDs().stream()
         .mapToDouble(Double::doubleValue)
@@ -62,6 +67,7 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Z Rotation", zRotation);
         SmartDashboard.putNumber("Distance", distance);
         SmartDashboard.putData("Field",Field2d);
+        SmartDashboard.putNumber("Speed", Math.max(-MaxSpeed, Math.min(((((cameraData.getDistance() - 1.5) * 1) + (-1 * 0 )) * MaxSpeed) / 3.5, MaxSpeed)));
         if(cameraData.targetVisible() == true){
             //VisionData.findRobotPos();
         }

@@ -25,7 +25,7 @@ import frc.robot.subsystems.PhotonVision;
 import frc.robot.subsystems.VisionData;
 
 public class RobotContainer {
-    private double MaxSpeed = 1.0 * OldTunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxSpeed = 1.0 * OldTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) / 3.5; // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     //MaxSpeed * 
     /* Setting up bindings for necessary control of the swerve drive platform */
@@ -47,6 +47,8 @@ public class RobotContainer {
 
     private final double desiredDistance = 2;
 
+    private final double MaxDistance = 32;
+
     private double driveWithAprilTag = 1;
 
     private double driveWithStick = 0;
@@ -65,9 +67,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX((((vision.getDistance() - desiredDistance) * driveWithAprilTag) + (-joystick.getLeftY() * driveWithStick) * MaxSpeed) / speedDamper) //Drive forward with negative Y (forward)
-                    .withVelocityY((((-vision.getAnyYaw()/MaxYaw) * driveWithAprilTag) + (-joystick.getLeftX() * driveWithStick) * MaxSpeed) / speedDamper) //Drive left with negative X (left)
-                    .withRotationalRate((((1 - (vision.getZRotation()/Math.PI)) * driveWithAprilTag ) + (-joystick.getRightX() * driveWithStick) * MaxAngularRate) / speedDamper) // Don't rotate Drive counterclockwise with negative X (left)
+                drive.withVelocityX(Math.max(-MaxSpeed, Math.min((((((vision.getDistance() - desiredDistance) / MaxDistance) * driveWithAprilTag) + (-joystick.getLeftY() * driveWithStick)) * MaxSpeed), MaxSpeed))) //Drive forward with negative Y (forward)
+                    .withVelocityY(((((-vision.getAnyYaw()/MaxYaw) * driveWithAprilTag) + (-joystick.getLeftX() * driveWithStick)) * MaxSpeed) / speedDamper) //Drive left with negative X (left)
+                    .withRotationalRate(((((1 - (vision.getZRotation()/Math.PI)) * driveWithAprilTag ) + (-joystick.getRightX() * driveWithStick)) * MaxAngularRate) / speedDamper) // Don't rotate Drive counterclockwise with negative X (left)
                 )       
         );
 
