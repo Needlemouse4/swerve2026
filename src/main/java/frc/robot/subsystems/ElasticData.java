@@ -66,7 +66,7 @@ public class ElasticData extends SubsystemBase{
         SmartDashboard.putNumber("Z Rotation", zRotation);
         SmartDashboard.putNumber("Distance", distance);
         SmartDashboard.putData("Field",Field2d);
-        SmartDashboard.putNumber("Speed", Math.max(-MaxSpeed, Math.min(((((cameraData.getDistance() - 1.5) * 1) + (-1 * 0 )) * MaxSpeed) / 3.5, MaxSpeed)));
+        //SmartDashboard.putNumber("Speed", Math.max(-MaxSpeed, Math.min(((((cameraData.getDistance() - 1.5) * 1) + (-1 * 0 )) * MaxSpeed) / 3.5, MaxSpeed)));
         if(cameraData.targetVisible() == true){
             //VisionData.findRobotPos();
             SmartDashboard.putData("Robot Position", cameraData.getRobotPos());
