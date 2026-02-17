@@ -51,10 +51,6 @@ public class PhotonVision extends SubsystemBase{
         return vision.getTargetPitch(id);
     }
 
-    //public Pose2d getPose2d(){
-        //return vision.getPose2d();
-    //}
-
     public Field2d getRobotPos(){
         return vision.findRobotPos();
     }
