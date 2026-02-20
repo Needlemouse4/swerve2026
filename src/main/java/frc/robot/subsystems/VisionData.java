@@ -134,7 +134,7 @@ public class VisionData{
             if (cameraResult != null && cameraResult.isEmpty() == false) {
                     var fieldToCamera = cameraResult.get().estimatedPose.best;
                     field2d.setRobotPose(new Pose2d(fieldToCamera.getX(), fieldToCamera.getY(), fieldToCamera.getRotation().toRotation2d()));
-            } else {
+            } else {  
                 field2d.setRobotPose(new Pose2d()); //Maybe not such a good idea
             }
         } else {
