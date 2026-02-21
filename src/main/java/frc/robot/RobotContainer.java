@@ -8,8 +8,8 @@ import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import frc.robot.commands.Drive;
 
-import edu.wpi.first.hal.ThreadsJNI;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,10 +18,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
+import frc.robot.commands.ToggleIntake;
+
 import frc.robot.generated.OldTunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElasticData;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.PhotonVision;
+import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.VisionData;
 
 public class RobotContainer {
@@ -53,7 +57,13 @@ public class RobotContainer {
 
     private double driveWithStick = 0;
 
+    private final Intake intake = new Intake();
+  
+    private final Pneumatics Pneumatics = new Pneumatics();
+
     private final CommandXboxController joystick = new CommandXboxController(0);
+
+    final ToggleIntake activation = new ToggleIntake(Pneumatics, intake);
 
     public final CommandSwerveDrivetrain drivetrain = OldTunerConstants.createDrivetrain();
 
@@ -93,6 +103,8 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         joystick.x().onTrue(pipelineSwitcher());
         joystick.y().onTrue(toggleJoystix());
+        joystick.b().whileTrue(new Drive(intake));
+        joystick.a().onTrue(activation);//onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
         //joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
         //joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
 
