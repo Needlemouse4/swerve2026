@@ -62,6 +62,8 @@ public class RobotContainer {
     private final Pneumatics Pneumatics = new Pneumatics();
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController operatorController = new CommandXboxController(1);
+
 
     final ToggleIntake activation = new ToggleIntake(Pneumatics, intake);
 
@@ -103,10 +105,12 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
         joystick.x().onTrue(pipelineSwitcher());
         joystick.y().onTrue(toggleJoystix());
-        joystick.b().whileTrue(new Drive(intake));
-        joystick.a().onTrue(activation);//onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
         //joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
         //joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
+        operatorController.x().whileTrue(new Drive(intake));
+        operatorController.y().onTrue(activation);//onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
+
+
 
         // Reset the field-centric heading on left bumper press.
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
