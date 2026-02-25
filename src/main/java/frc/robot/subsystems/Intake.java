@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   public TalonSRX motor1;
@@ -16,7 +17,7 @@ public class Intake extends SubsystemBase {
   private static DigitalInput m_toplimitSwitch = new DigitalInput(0);
       
   public Intake() {
-    motor1 = new TalonSRX(30);
+    motor1 = new TalonSRX(Constants.Intake_ID);
   }   
              
           public void stop() {

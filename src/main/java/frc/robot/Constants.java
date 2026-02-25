@@ -22,11 +22,12 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-  public static final int Hood_ID = 30;
-  public static final int Flywheel_Lead_ID = 31;
-  public static final int Flywheel_Follower_ID = 5;
-  public static final int Index_ID = 50;
-  public static final int Spindex_ID = 2;
+  public static final int Hood_ID = 21;
+  public static final int Flywheel_Lead_ID = 22;
+  public static final int Flywheel_Follower_ID = 23;
+  public static final int Index_ID = 30;
+  public static final int Spindex_ID = 31;
+  public static final int Intake_ID = 41;  
 
   public static final int kDriverControllerPort = 0;
     public static final int LEFT_LEADER_ID = 1;
