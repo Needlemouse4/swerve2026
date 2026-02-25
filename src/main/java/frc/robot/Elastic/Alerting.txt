@@ -1,0 +1,62 @@
+package frc.robot.subsystems.Elastic;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.util.Elastic;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Elastic.Rumbling;
+
+
+public class Alerting extends SubsystemBase{
+
+   
+private final CommandXboxController m_driverController =
+      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+      SendableChooser<Command> m_Chooser = new SendableChooser<>();
+
+    Elastic.Notification noooooo = new Elastic.Notification(Elastic.Notification.NotificationLevel.ERROR, "nooooo", "its broken now");
+    
+   public boolean rumble = false;
+
+   public  Alerting() {
+
+
+            SmartDashboard.putData("Alert time", Alerts()); 
+    
+            SmartDashboard.putBoolean("rumble toggle", rumble);
+
+     
+    m_Chooser.setDefaultOption("Alert Spam LOL", Alerts());
+
+    SmartDashboard.putData("Alerts", m_Chooser);
+
+
+}
+
+
+    public Command Alerts() {
+
+ return run(
+        () -> {
+            Elastic.sendNotification(noooooo);
+
+            if (rumble == true) {
+
+                run ( () -> {
+                    m_driverController.setRumble(RumbleType.kLeftRumble, 1.0); 
+                    m_driverController.setRumble(RumbleType.kRightRumble, 1.0);
+                    
+
+                });
+
+            }
+        });
+
+   }
+
+}

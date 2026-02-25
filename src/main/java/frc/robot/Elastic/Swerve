@@ -1,0 +1,42 @@
+package frc.robot.subsystems.Elastic;
+
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.*;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import frc.robot.generated.*;
+public class Swerve extends SubsystemBase {
+
+  Swerve(){
+
+
+SmartDashboard.putData("Swerve Drive", Sendable());
+
+}
+}
+
+class swerveSendable implements Sendable{
+
+  @Override
+  public void initSendable(SendableBuilder builder) {
+         
+    builder.setSmartDashboardType("SwerveDrive");
+
+    builder.addDoubleProperty("Front Left Angle", () -> frontLeftModule.getAngle().getRadians(), null);
+    builder.addDoubleProperty("Front Left Velocity", () -> frontLeftModule.getVelocity(), null);
+
+    builder.addDoubleProperty("Front Right Angle", ()-> frontRightModule.getAngle().getRadians(), null);
+    builder.addDoubleProperty("Front Right Velocity", () -> frontRightModule.getVelocity(), null);
+
+    builder.addDoubleProperty("Back Left Angle", () -> backLeftModule.getAngle().getRadians(), null);
+    builder.addDoubleProperty("Back Left Velocity", () -> backLeftModule.getVelocity(), null);
+
+    builder.addDoubleProperty("Back Right Angle", () -> backRightModule.getAngle().getRadians(), null);
+    builder.addDoubleProperty("Back Right Velocity", () -> backRightModule.getVelocity(), null);
+
+    builder.addDoubleProperty("Robot Angle", () -> getRotation().getRadians(), null);
+        
+  }
+
+}

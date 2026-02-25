@@ -1,0 +1,77 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.231111111111111,
+        "y": 4.019253472222222
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.8531944444444446,
+        "y": 3.5783506944444445
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.908402777777778,
+        "y": 2.602065972222223
+      },
+      "prevControl": {
+        "x": 2.5151540798611114,
+        "y": 3.428758680555556
+      },
+      "nextControl": {
+        "x": 1.3016514756944448,
+        "y": 1.7753732638888895
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.7274131944444446,
+        "y": 0.7124826388888892
+      },
+      "prevControl": {
+        "x": 0.8524131944444446,
+        "y": 0.9289889898349989
+      },
+      "nextControl": null,
+      "isLocked": true,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Intake",
+      "waypointRelativePos": 2.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 2.5,
+    "maxAcceleration": 2.5,
+    "maxAngularVelocity": 90.0,
+    "maxAngularAcceleration": 90.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "Human Player",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": false
+}

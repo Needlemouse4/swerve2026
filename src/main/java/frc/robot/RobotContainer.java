@@ -11,6 +11,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import frc.robot.commands.Drive;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -51,6 +52,7 @@ import frc.robot.subsystems.IndexAndSpindexSubsystem;
 import frc.robot.subsystems.FlywheelSubsystem;
 import frc.robot.subsystems.TurretMovement;
 import frc.robot.subsystems.TurretVision;
+import frc.robot.Elastic.ElasticContainer;
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TurretTunerConstants.kSpeedAt12Volts.in(MetersPerSecond) / 3.5; // kSpeedAt12Volts desired top speed
@@ -101,6 +103,7 @@ public class RobotContainer {
     final ToggleIntake activation = new ToggleIntake(Pneumatics, intake);
 
     public final CommandSwerveDrivetrain drivetrain = TurretTunerConstants.createDrivetrain();
+    public final ElasticContainer elastic;
 
     public RobotContainer() {
         SmartDashboard.putNumber("flywheelSpeed", 0);
@@ -110,6 +113,7 @@ public class RobotContainer {
         SmartDashboard.putNumber("kP", 0.4);
         SmartDashboard.putNumber("kI", 0.0);
         SmartDashboard.putNumber("kD", 0.0);
+        elastic = new ElasticContainer(this,logger);
         configureBindings();
     }
 
@@ -151,7 +155,11 @@ public class RobotContainer {
         operatorController.b().whileTrue(new ClimbForward(climber));
         operatorController.x().whileTrue(new Drive(intake));
         operatorController.y().onTrue(activation);//onTrue(getAutonomousCommand());//(new Activation(Pneumatics));
-
+        joystick.a().onTrue(elastic.fieldWidget.getAuto("Test Wait Command"));
+        //joystick.b().onTrue(elastic.fieldWidget.getAuto("First Test"));
+        joystick.x().onTrue(elastic.fieldWidget.getAuto("Test Auto"));
+        joystick.y().onTrue(elastic.fieldWidget.getAuto("HPR"));
+        joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
         joystick.leftTrigger().onTrue(new TurretScan(m_turretvision, m_shooter));
         // calls the method that turns the stopButton for Scan to true
         joystick.rightTrigger().onTrue(m_shooter.runOnce(()->m_shooter.getStopCommand()));
@@ -179,6 +187,8 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
+
+    private final SendableChooser<Command> autoChooser = null;
 
     public Command getAutonomousCommand() {
         // Simple drive forward auton
