@@ -18,7 +18,7 @@ public class TurretMovement extends SubsystemBase{
     int leftTriggerPressed;
 
     public TurretMovement(){
-        leftLeader = new TalonFX(31);  
+        leftLeader = new TalonFX(Constants.Turret_ID);  
         leftLeader.setVoltage(0);
         leftTriggerPressed = 0;
 

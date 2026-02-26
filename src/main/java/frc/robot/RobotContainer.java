@@ -79,9 +79,9 @@ public class RobotContainer {
 
     private final double MaxDistance = 32;
 
-    private double driveWithAprilTag = 1;
+    private double driveWithAprilTag = 0;
 
-    private double driveWithStick = 0;
+    private double driveWithStick = 1;
 
     private final Intake intake = new Intake();
   
@@ -147,8 +147,8 @@ public class RobotContainer {
         joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-        joystick.x().onTrue(pipelineSwitcher());
-        joystick.y().onTrue(toggleJoystix());
+        //joystick.x().onTrue(pipelineSwitcher());
+        //joystick.y().onTrue(toggleJoystix());
         //joystick.leftTrigger(0.5).whileTrue(moveAprilTagLeft());
         //joystick.rightTrigger(0.5).whileTrue(moveAprilTagRight());
         operatorController.a().whileTrue(new ClimbBackward(climber));
