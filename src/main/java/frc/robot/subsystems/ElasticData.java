@@ -9,6 +9,9 @@ import frc.robot.Telemetry;
 import frc.robot.generated.OldTunerConstants;
 import static edu.wpi.first.units.Units.*;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+
 
 
 public class ElasticData extends SubsystemBase{
@@ -16,6 +19,10 @@ public class ElasticData extends SubsystemBase{
     private final PhotonVision cameraData;
     Field2d Field2d = new Field2d();
     VisionData VisionData = new VisionData("testingCamera");
+    double Hubwidth = 0.6;
+    double Radius = 3;
+    double Rotation1 = 0.0;
+    boolean fuelMakeIt = false;
     public ElasticData(Telemetry m_telemetry, PhotonVision camera){
         telemetry = m_telemetry;
         cameraData = camera;
@@ -87,7 +94,25 @@ public class ElasticData extends SubsystemBase{
             }
         }
         
-        
+
+        //AC- Additional Field2d Stuff
+        Field2d.getObject("Hub").setPose(4.6,4,new Rotation2d(0.0));
+        double Rotation =  new TurretMovement().returnMotor().getPosition().getValueAsDouble();
+        SmartDashboard.putBoolean("Will the Fuel make it?", fuelMakeIt);
+        Field2d.getObject("Aim").setPose(Field2d.getRobotPose().getX() +  (Radius * (Math.cos(Rotation))),Field2d.getRobotPose().getY() + (Radius * (Math.sin(Rotation))),new Rotation2d(Rotation));
+        Pose2d AimPose = Field2d.getObject("Aim").getPose();
+        Pose2d HubPose = Field2d.getObject("Hub").getPose();
+        if(AimPose.getX() >= (HubPose.getX()-(Hubwidth/2)) && AimPose.getX() <= (HubPose.getX()+(Hubwidth/2))){
+            if (AimPose.getY() >= (HubPose.getY()-Hubwidth) && AimPose.getY() <= (HubPose.getY()+Hubwidth)) {
+                fuelMakeIt = true;
+            }
+            else{
+                fuelMakeIt = false;
+            }
+        }
+        else{
+            fuelMakeIt = false;
+        }
         
         SmartDashboard.updateValues();
 

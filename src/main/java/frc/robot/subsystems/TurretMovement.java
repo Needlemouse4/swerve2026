@@ -61,4 +61,8 @@ public class TurretMovement extends SubsystemBase{
         return Constants.stopbutton = true;
     }
 
+    public TalonFX returnMotor(){
+        return leftLeader;
+    }
+
 }
